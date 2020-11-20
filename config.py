@@ -10,6 +10,7 @@ config_file_path = f'{config_dir}/config.json'
 if not path.exists(config_file_path):
     default_config = {
         'max_page': 500,
+        'interval': 30,
         'categories': {
             'general': True,
             'anime': True,

@@ -4,9 +4,10 @@
 from time import sleep
 import tempfile
 from wallpaper import set_random_wallpaper
+from config import config
 
 
 if __name__ == '__main__':
     while True:
         set_random_wallpaper(tempfile.gettempdir())
-        sleep(30)
+        sleep(config['interval'])
