@@ -5,10 +5,8 @@ from time import sleep
 import tempfile
 from wallpaper import set_random_wallpaper
 
-MAX_WALLPAPER_PAGES = 500
-
 
 if __name__ == '__main__':
     while True:
-        set_random_wallpaper(MAX_WALLPAPER_PAGES, tempfile.gettempdir())
+        set_random_wallpaper(tempfile.gettempdir())
         sleep(30)

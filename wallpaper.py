@@ -4,6 +4,7 @@ import platform
 import os
 from log import get_logger
 from requests import get
+from config import config
 
 
 logger = get_logger(__name__)
@@ -22,13 +23,13 @@ def _set_wallpaper(wallpaper, wallpaper_path):
         wallpaper.set_wallpaper(wallpaper_path)
 
 
-def _get_random_wallpaper(wallhaven_max_page):
+def _get_random_wallpaper():
     params = Parameters()
-    params.set_categories(general=True, anime=True, people=True)
+    params.set_categories(**config['categories'])
     params.set_sorting("toplist")
     params.set_range("1y")
-    params.set_purity(sfw=True, sketchy=True, nsfw=True)
-    params.set_page(randint(1, wallhaven_max_page))
+    params.set_purity(**config['purity'])
+    params.set_page(randint(1, config['max_page']))
 
     data = wallhaven.search(params)
 
@@ -47,7 +48,7 @@ def _download_wallpaper(wallpaper, image_dir):
     return image_path
 
 
-def set_random_wallpaper(wallhaven_max_page, image_dir):
-    wallpaper = _get_random_wallpaper(wallhaven_max_page)
+def set_random_wallpaper(image_dir):
+    wallpaper = _get_random_wallpaper()
     wallpaper_path = _download_wallpaper(wallpaper, image_dir)
     _set_wallpaper(wallpaper, wallpaper_path)

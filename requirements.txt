@@ -1,2 +1,3 @@
 wallhaven==0.6.6
 pyinstaller==4.1
+appdirs==1.4.4
