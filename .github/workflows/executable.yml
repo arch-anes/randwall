@@ -1,0 +1,84 @@
+name: Executable
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - run: python -m pip install -r requirements.txt
+      - run: python -m PyInstaller --onefile random_wallpaper
+      - uses: actions/upload-artifact@v2
+        with:
+          name: "random_wallpaper_${{ runner.os }}"
+          path: dist
+
+  release:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: release-drafter/release-drafter@v5
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: random_wallpaper_Linux
+          path: dist/linux
+      - run: chmod +x dist/linux/random_wallpaper
+      - run: tar -pczvf linux.tar.gz -C dist/linux random_wallpaper
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./linux.tar.gz
+          asset_name: random_wallpaper_standalone_linux-x64.tar.gz
+          asset_content_type: application/octet-stream
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: random_wallpaper_macOS
+          path: dist/macos
+      - run: chmod +x dist/macos/random_wallpaper
+      - run: tar -pczvf macos.tar.gz -C dist/macos random_wallpaper
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./macos.tar.gz
+          asset_name: random_wallpaper_standalone_macos-x64.tar.gz
+          asset_content_type: application/octet-stream
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: random_wallpaper_Windows
+          path: dist/windows
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/windows/random_wallpaper.exe
+          asset_name: random_wallpaper_standalone_windows-x64.exe
+          asset_content_type: application/octet-stream
