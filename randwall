@@ -10,4 +10,4 @@ from config import config
 if __name__ == '__main__':
     while True:
         set_random_wallpaper(tempfile.gettempdir())
-        sleep(config['interval'])
+        sleep(config.raw_config['interval'])

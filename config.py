@@ -1,3 +1,6 @@
+from watchgod import watch
+from threading import Thread
+import sys
 from appdirs import user_config_dir
 import json
 from os import path, makedirs
@@ -33,6 +36,27 @@ if not path.exists(config_file_path):
     with open(config_file_path, 'wt') as f:
         json.dump(default_config, f, sort_keys=True, indent=2)
 
-with open(config_file_path, 'rt') as f:
-    logger.info(f"Reading config from {config_file_path}")
-    config = json.load(f)
+
+class Config:
+    def __init__(self):
+        self.raw_config = self._load_config()
+
+    def _load_config(self):
+        with open(config_file_path, 'rt') as f:
+            logger.info(f"Reading config from {config_file_path}")
+            try:
+                return json.load(f)
+            except:
+                logger.error(f"An error occured when reading config from {config_file_path}")
+
+    def watch_config_changes(self):
+        for changes in watch(config_file_path):
+            self.raw_config = self._load_config()
+
+
+config = Config()
+
+
+thread = Thread(target=config.watch_config_changes)
+thread.daemon = True
+thread.start()
