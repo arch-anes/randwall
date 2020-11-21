@@ -18,9 +18,8 @@ _old_get_params = Parameters.get_params
 
 def _new_get_params(self):
     data = _old_get_params(self)
-
     data['ratios'] = "16x9,16x10"
-
+    data['q'] = data['q'].replace("-", " -").replace("+", " +")
     return data
 
 
