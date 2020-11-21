@@ -37,9 +37,9 @@ def _get_random_wallpaper():
 
 
 def _download_wallpaper(wallpaper, image_dir):
-    logger.info(f"Downloading {wallpaper['url']}")
-
     image_path = f"{image_dir}/{wallpaper['id']}.jpg"
+
+    logger.info(f"Downloading {wallpaper['url']} at {image_path}")
 
     with open(image_path, 'wb') as f:
         image = get(wallpaper['path']).content
