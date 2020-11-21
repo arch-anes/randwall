@@ -5,7 +5,7 @@ from log import get_logger
 
 logger = get_logger(__name__)
 
-config_dir = user_config_dir(appname="random_wallpaper")
+config_dir = user_config_dir(appname="randwall")
 if not path.exists(config_dir):
     makedirs(config_dir)
 

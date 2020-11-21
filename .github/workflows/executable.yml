@@ -22,10 +22,10 @@ jobs:
         with:
           python-version: 3.8
       - run: python -m pip install -r requirements.txt
-      - run: python -m PyInstaller --onefile random_wallpaper
+      - run: python -m PyInstaller --onefile randwall
       - uses: actions/upload-artifact@v2
         with:
-          name: "random_wallpaper_${{ runner.os }}"
+          name: "randwall_${{ runner.os }}"
           path: dist
 
   release:
@@ -42,43 +42,43 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: random_wallpaper_Linux
+          name: randwall_Linux
           path: dist/linux
-      - run: chmod +x dist/linux/random_wallpaper
-      - run: tar -pczvf linux.tar.gz -C dist/linux random_wallpaper
+      - run: chmod +x dist/linux/randwall
+      - run: tar -pczvf linux.tar.gz -C dist/linux randwall
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./linux.tar.gz
-          asset_name: random_wallpaper_standalone_linux-x64.tar.gz
+          asset_name: randwall_standalone_linux-x64.tar.gz
           asset_content_type: application/octet-stream
 
       - uses: actions/download-artifact@v2
         with:
-          name: random_wallpaper_macOS
+          name: randwall_macOS
           path: dist/macos
-      - run: chmod +x dist/macos/random_wallpaper
-      - run: tar -pczvf macos.tar.gz -C dist/macos random_wallpaper
+      - run: chmod +x dist/macos/randwall
+      - run: tar -pczvf macos.tar.gz -C dist/macos randwall
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./macos.tar.gz
-          asset_name: random_wallpaper_standalone_macos-x64.tar.gz
+          asset_name: randwall_standalone_macos-x64.tar.gz
           asset_content_type: application/octet-stream
 
       - uses: actions/download-artifact@v2
         with:
-          name: random_wallpaper_Windows
+          name: randwall_Windows
           path: dist/windows
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/windows/random_wallpaper.exe
-          asset_name: random_wallpaper_standalone_windows-x64.exe
+          asset_path: ./dist/windows/randwall.exe
+          asset_name: randwall_standalone_windows-x64.exe
           asset_content_type: application/octet-stream
