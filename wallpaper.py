@@ -13,6 +13,20 @@ wallhaven = Wallhaven(config['api_key'])
 wallhaven.REQUEST_TIMEOUT = 0
 
 
+_old_get_params = Parameters.get_params
+
+
+def _new_get_params(self):
+    data = _old_get_params(self)
+
+    data['ratios'] = "16x9,16x10"
+
+    return data
+
+
+Parameters.get_params = _new_get_params
+
+
 # Taken from https://github.com/AlfredoSequeida/venus/blob/master/venus/os_tools/
 
 def _set_wallpaper_macos(wallpaper_path):
