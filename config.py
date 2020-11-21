@@ -1,6 +1,9 @@
 from appdirs import user_config_dir
 import json
 from os import path, makedirs
+from log import get_logger
+
+logger = get_logger(__name__)
 
 config_dir = user_config_dir(appname="random_wallpaper")
 if not path.exists(config_dir):
@@ -8,6 +11,8 @@ if not path.exists(config_dir):
 
 config_file_path = f'{config_dir}/config.json'
 if not path.exists(config_file_path):
+    logger.info(f"Creating default config at {config_file_path}")
+
     default_config = {
         'max_page': 500,
         'interval': 30,
@@ -27,4 +32,5 @@ if not path.exists(config_file_path):
         json.dump(default_config, f)
 
 with open(config_file_path, 'rt') as f:
+    logger.info(f"Reading config from {config_file_path}")
     config = json.load(f)

@@ -12,8 +12,7 @@ def _get_console_handler():
 
 
 def get_logger(name):
-
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
     logger.addHandler(_get_console_handler())
     logger.propagate = False
