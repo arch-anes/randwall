@@ -30,7 +30,7 @@ if not path.exists(config_file_path):
     }
 
     with open(config_file_path, 'wt') as f:
-        json.dump(default_config, f)
+        json.dump(default_config, f, sort_keys=True, indent=2)
 
 with open(config_file_path, 'rt') as f:
     logger.info(f"Reading config from {config_file_path}")
