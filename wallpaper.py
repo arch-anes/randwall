@@ -110,9 +110,11 @@ def _get_random_wallpaper():
     params.set_page(randint(1, config.raw_config['max_page']))
     params.exclude_tags(config.raw_config['exclude'])
 
-    data = wallhaven.search(params)
-
-    return choice(data)
+    try:
+        data = wallhaven.search(params)
+        return choice(data)
+    except:
+        logger.error("Couldn't fetch wallpaper.")
 
 
 def _download_wallpaper(wallpaper, image_dir):
@@ -129,5 +131,8 @@ def _download_wallpaper(wallpaper, image_dir):
 
 def set_random_wallpaper(image_dir):
     wallpaper = _get_random_wallpaper()
+    if wallpaper is None:
+        return
+
     wallpaper_path = _download_wallpaper(wallpaper, image_dir)
     _set_wallpaper(wallpaper, wallpaper_path)
