@@ -9,7 +9,7 @@ import subprocess
 
 logger = get_logger(__name__)
 
-wallhaven = Wallhaven()
+wallhaven = Wallhaven(config['api_key'])
 wallhaven.REQUEST_TIMEOUT = 0
 
 

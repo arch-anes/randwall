@@ -14,6 +14,7 @@ if not path.exists(config_file_path):
     logger.info(f"Creating default config at {config_file_path}")
 
     default_config = {
+        'api_key': '',
         'max_page': 500,
         'interval': 30,
         'categories': {
