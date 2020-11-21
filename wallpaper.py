@@ -108,6 +108,8 @@ def _get_random_wallpaper():
     params.set_range("1y")
     params.set_purity(**config.raw_config['purity'])
     params.set_page(randint(1, config.raw_config['max_page']))
+    if config.raw_config['include']:
+        params.include_tags(config.raw_config['include'])
     params.exclude_tags(config.raw_config['exclude'])
 
     try:

@@ -30,6 +30,7 @@ if not path.exists(config_file_path):
             'sketchy': False,
             'nsfw': False,
         },
+        'include': [],
         'exclude': ['microsoft', 'logo'],
     }
 
