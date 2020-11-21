@@ -94,6 +94,7 @@ def _get_random_wallpaper():
     params.set_range("1y")
     params.set_purity(**config['purity'])
     params.set_page(randint(1, config['max_page']))
+    params.exclude_tags(config['exclude'])
 
     data = wallhaven.search(params)
 

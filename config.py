@@ -26,7 +26,8 @@ if not path.exists(config_file_path):
             'sfw': True,
             'sketchy': False,
             'nsfw': False,
-        }
+        },
+        'exclude': ['microsoft', 'logo'],
     }
 
     with open(config_file_path, 'wt') as f:
