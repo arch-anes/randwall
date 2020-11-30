@@ -5,9 +5,11 @@ from time import sleep
 import tempfile
 from wallpaper import set_random_wallpaper
 from config import config
+from connection import wait_for_connection
 
 
 if __name__ == '__main__':
     while True:
+        wait_for_connection()
         set_random_wallpaper(tempfile.gettempdir())
         sleep(config.raw_config['interval'])
