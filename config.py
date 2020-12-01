@@ -34,6 +34,7 @@ class Config:
     def __init__(self):
         self.raw_config = self._load_config()
         self._write_config()
+        self._watch_config_changes()
 
     def _write_config(self):
         if not path.exists(self.config_dir):
@@ -52,14 +53,14 @@ class Config:
             except:
                 logger.error(f"An error occured when reading config from {self.config_file_path}")
 
-    def watch_config_changes(self):
-        for changes in watch(self.config_file_path):
-            self.raw_config = self._load_config()
+    def _watch_config_changes(self):
+        def watch_config():
+            for changes in watch(self.config_file_path):
+                self.raw_config = self._load_config()
+
+        thread = Thread(target=watch_config)
+        thread.daemon = True
+        thread.start()
 
 
 config = Config()
-
-
-thread = Thread(target=config.watch_config_changes)
-thread.daemon = True
-thread.start()
