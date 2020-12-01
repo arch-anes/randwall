@@ -36,6 +36,9 @@ class Config:
         self._write_config()
         self._watch_config_changes()
 
+    def __getitem__(self, arg):
+        return self.raw_config[arg]
+
     def _write_config(self):
         if not path.exists(self.config_dir):
             makedirs(self.config_dir)

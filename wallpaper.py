@@ -9,7 +9,7 @@ import subprocess
 
 logger = get_logger(__name__)
 
-wallhaven = Wallhaven(config.raw_config['api_key'])
+wallhaven = Wallhaven(config['api_key'])
 wallhaven.REQUEST_TIMEOUT = 0
 
 
@@ -102,14 +102,14 @@ def _set_wallpaper(wallpaper, wallpaper_path):
 
 def _get_random_wallpaper():
     params = Parameters()
-    params.set_categories(**config.raw_config['categories'])
+    params.set_categories(**config['categories'])
     params.set_sorting("toplist")
     params.set_range("1y")
-    params.set_purity(**config.raw_config['purity'])
-    params.set_page(randint(1, config.raw_config['max_page']))
-    if config.raw_config['include']:
-        params.include_tags(config.raw_config['include'])
-    params.exclude_tags(config.raw_config['exclude'])
+    params.set_purity(**config['purity'])
+    params.set_page(randint(1, config['max_page']))
+    if config['include']:
+        params.include_tags(config['include'])
+    params.exclude_tags(config['exclude'])
 
     try:
         data = wallhaven.search(params)
