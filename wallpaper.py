@@ -6,6 +6,7 @@ from log import get_logger
 from requests import get
 from config import config
 import subprocess
+import tempfile
 
 logger = get_logger(__name__)
 
@@ -118,7 +119,8 @@ def _get_random_wallpaper():
         logger.error("Couldn't fetch wallpaper.")
 
 
-def _download_wallpaper(wallpaper, image_dir):
+def _download_wallpaper(wallpaper):
+    image_dir = tempfile.gettempdir()
     image_path = f"{image_dir}/{wallpaper['id']}.jpg"
 
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
@@ -130,10 +132,10 @@ def _download_wallpaper(wallpaper, image_dir):
     return image_path
 
 
-def set_random_wallpaper(image_dir):
+def set_random_wallpaper():
     wallpaper = _get_random_wallpaper()
     if wallpaper is None:
         return
 
-    wallpaper_path = _download_wallpaper(wallpaper, image_dir)
+    wallpaper_path = _download_wallpaper(wallpaper)
     _set_wallpaper(wallpaper, wallpaper_path)
