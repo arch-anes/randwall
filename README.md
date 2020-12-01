@@ -22,11 +22,7 @@ Install the `randwall-bin` AUR package.
 
 ## Configuration
 
-When you start `randwall` for the first time, a configuration file with default options will be created at:
-
-- `~/.config/randwall/config.json` on Linux
-- `%AppData%\Local\randwall\randwall\config.json` on Windows
-- `~/Library/Preferences/randwall/config.json` on MacOS
+When you start `randwall` for the first time, a configuration file with default options will be created.
 
 The configuration file contains the following settings:
 
