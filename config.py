@@ -15,6 +15,7 @@ class Config:
 
     default_config = {
         'api_key': '',
+        'keep': 10,
         'max_page': 500,
         'interval': 30,
         'categories': {
@@ -43,7 +44,7 @@ class Config:
         if not path.exists(self.config_dir):
             makedirs(self.config_dir)
 
-        logger.info(f"Writing config to {self.config_file_path}.")
+        logger.info(f"Writing config to {self.config_file_path}")
         with open(self.config_file_path, 'wt') as f:
             json.dump(self.raw_config, f, sort_keys=True, indent=2)
 

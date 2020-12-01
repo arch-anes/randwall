@@ -139,3 +139,4 @@ def set_random_wallpaper():
 
     wallpaper_path = _download_wallpaper(wallpaper)
     _set_wallpaper(wallpaper, wallpaper_path)
+    return wallpaper_path

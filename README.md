@@ -32,6 +32,7 @@ The configuration file contains the following settings:
 
 - `api_key` (empty by default): This is your [Wallhaven API key](https://wallhaven.cc/settings/account). This is only needed when `purity.nsfw` is enabled.
 - `max_page` (default 500): The maximum Wallhaven page to go to when fetching wallpapers (the more restrictive the keywords are, the lower this number should be set to).
+- `keep` (default 10): The maximum number of wallpapers to keep in temporary folder. A value of `0` means keeping everything.
 - `interval` (default 30): Fetch interval in seconds.
 - `categories` (all enabled by default): These are the [Wallhaven categories](https://wallhaven.cc/toplist).
 - `purity` (`sfw` only enabled by default): These are the [Wallhaven purity settings](https://wallhaven.cc/toplist). `nsfw` needs an API key.
