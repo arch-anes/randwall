@@ -50,6 +50,7 @@ class Config:
 
     def _load_config(self):
         if not path.exists(self.config_file_path):
+            logger.info(f"No config file found at {self.config_file_path}. Loading default config...")
             return self.default_config
 
         with open(self.config_file_path, 'rt') as f:
@@ -58,7 +59,8 @@ class Config:
                 loaded_config = json.load(f)
                 return {**self.default_config, **loaded_config}
             except:
-                logger.error(f"An error occured when reading config from {self.config_file_path}")
+                logger.error(f"An error occured when reading config from {self.config_file_path}. Loading default config...")
+                return self.default_config
 
     def _watch_config_changes(self):
         def watch_config():
