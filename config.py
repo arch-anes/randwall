@@ -49,6 +49,9 @@ class Config:
             json.dump(self.raw_config, f, sort_keys=True, indent=2)
 
     def _load_config(self):
+        if not path.exists(self.config_file_path):
+            return self.default_config
+
         with open(self.config_file_path, 'rt') as f:
             logger.info(f"Reading config from {self.config_file_path}")
             try:
