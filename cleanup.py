@@ -9,15 +9,18 @@ queue = Queue()
 
 
 def enqueue_wallpaper_for_cleanup(wallpaper_path):
-    max_queue_size = config["keep"]
-
     queue.put(wallpaper_path)
 
+    max_queue_size = config["keep"]
     if max_queue_size == 0:
         return
 
     while queue.qsize() > max_queue_size:
         wallpaper = queue.get()
+        
+        if  wallpaper is None:
+            continue
+
         if os.path.exists(wallpaper):
             logger.info(f"Removing {wallpaper}")
             os.remove(wallpaper)
