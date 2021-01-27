@@ -125,8 +125,12 @@ def _download_wallpaper(wallpaper):
 
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
 
-    with open(image_path, 'wb') as f:
+    try:
         image = get(wallpaper['path']).content
+    except:
+        return
+
+    with open(image_path, 'wb') as f:
         f.write(image)
 
     return image_path
@@ -138,5 +142,8 @@ def set_random_wallpaper():
         return
 
     wallpaper_path = _download_wallpaper(wallpaper)
+    if wallpaper_path is None:
+        return
+
     _set_wallpaper(wallpaper, wallpaper_path)
     return wallpaper_path
