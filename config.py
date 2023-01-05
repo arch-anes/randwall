@@ -1,6 +1,5 @@
-from watchgod import watch
+from watchfiles import watch
 from threading import Thread
-import sys
 from appdirs import user_config_dir
 import json
 from os import path, makedirs
@@ -15,9 +14,6 @@ class Config:
 
     default_config = {
         'api_key': '',
-        'keep': 10,
-        'max_page': 500,
-        'interval': 30,
         'categories': {
             'general': True,
             'anime': True,
@@ -28,8 +24,10 @@ class Config:
             'sketchy': False,
             'nsfw': False,
         },
-        'include': [],
-        'exclude': ['microsoft', 'logo'],
+        "tags": "-microsoft -logo +trees",
+        'interval': 30,
+        'keep': 10,
+
     }
 
     def __init__(self):

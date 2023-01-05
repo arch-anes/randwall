@@ -1,5 +1,3 @@
-from wallhaven import Wallhaven, Parameters
-from random import randint, choice
 import platform
 import os
 from log import get_logger
@@ -9,23 +7,6 @@ import subprocess
 import tempfile
 
 logger = get_logger(__name__)
-
-wallhaven = Wallhaven(config['api_key'])
-wallhaven.REQUEST_TIMEOUT = 0
-
-
-_old_get_params = Parameters.get_params
-
-
-def _new_get_params(self):
-    data = _old_get_params(self)
-    data['ratios'] = "16x9,16x10"
-    data['q'] = data['q'].replace("-", " -").replace("+", " +")
-    return data
-
-
-Parameters.get_params = _new_get_params
-
 
 # Taken from https://github.com/AlfredoSequeida/venus/blob/master/venus/os_tools/
 
@@ -44,6 +25,8 @@ def _set_wallpaper_linux(wallpaper_path):
     try:
         command = subprocess.call(
             ["gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file://" + wallpaper_path], **silent)
+        command_dark = subprocess.call(
+            ["gsettings", "set", "org.gnome.desktop.background", "picture-uri-dark", "file://" + wallpaper_path], **silent)
     except:
         pass
 
@@ -101,20 +84,30 @@ def _set_wallpaper(wallpaper, wallpaper_path):
         _set_wallpaper_windows(wallpaper_path)
 
 
+def _dict_to_binary_string(d):
+    return ''.join((str(int(val)) for val in d.values()))
+
+
 def _get_random_wallpaper():
-    params = Parameters()
-    params.set_categories(**config['categories'])
-    params.set_sorting("toplist")
-    params.set_range("1y")
-    params.set_purity(**config['purity'])
-    params.set_page(randint(1, config['max_page']))
-    if config['include']:
-        params.include_tags(config['include'])
-    params.exclude_tags(config['exclude'])
+    api_url = "https://wallhaven.cc/api/v1/search"
+    params = {
+        "categories": _dict_to_binary_string(config['categories']),
+        "purity": _dict_to_binary_string(config['purity']),
+        "q": config['tags'],
+        "sorting": "random",
+        "topRange": "1y",
+        "page": "1",
+        "ratios": "16x9,16x10",
+    }
+    headers = {
+        "User-Agent": "randwall/1.0"
+    }
 
     try:
-        data = wallhaven.search(params)
-        return choice(data)
+        response = get(api_url, params=params, headers=headers)
+        data = response.json()
+        image_data = data["data"][0]
+        return {"id": image_data["id"], "url": image_data['path']}
     except:
         logger.error("Couldn't fetch wallpaper.")
 
@@ -126,7 +119,7 @@ def _download_wallpaper(wallpaper):
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
 
     try:
-        image = get(wallpaper['path']).content
+        image = get(wallpaper['url']).content
     except:
         return
 

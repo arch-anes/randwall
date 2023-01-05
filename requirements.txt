@@ -1,4 +1,4 @@
-wallhaven==0.6.6
-pyinstaller==4.1
+pyinstaller==5.7.0
 appdirs==1.4.4
-watchgod==0.6
+watchfiles==0.18.1
+requests==2.28.1
