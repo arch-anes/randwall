@@ -84,15 +84,16 @@ def _set_wallpaper(wallpaper, wallpaper_path):
         _set_wallpaper_windows(wallpaper_path)
 
 
-def _dict_to_binary_string(d):
-    return ''.join((str(int(val)) for val in d.values()))
+def _dict_to_binary_string(dm, order):
+    return ''.join(str(int(dm[key])) for key in order)
 
 
 def _get_random_wallpaper():
     api_url = "https://wallhaven.cc/api/v1/search"
     params = {
-        "categories": _dict_to_binary_string(config['categories']),
-        "purity": _dict_to_binary_string(config['purity']),
+        "apikey" : {config['api_key']},
+        "categories": _dict_to_binary_string(config['categories'], ['general', 'anime', 'people']),
+        "purity": _dict_to_binary_string(config['purity'], ['sfw', 'sketchy', 'nsfw']),
         "q": config['tags'],
         "sorting": "random",
         "topRange": "1y",
