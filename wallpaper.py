@@ -10,6 +10,7 @@ logger = get_logger(__name__)
 
 # Taken from https://github.com/AlfredoSequeida/venus/blob/master/venus/os_tools/
 
+
 def _set_wallpaper_macos(wallpaper_path):
     SCRIPT = """/usr/bin/osascript<<END
     tell application "Finder"
@@ -91,7 +92,7 @@ def _dict_to_binary_string(dm, order):
 def _get_random_wallpaper():
     api_url = "https://wallhaven.cc/api/v1/search"
     params = {
-        "apikey" : {config['api_key']},
+        "apikey": {config['api_key']},
         "categories": _dict_to_binary_string(config['categories'], ['general', 'anime', 'people']),
         "purity": _dict_to_binary_string(config['purity'], ['sfw', 'sketchy', 'nsfw']),
         "q": config['tags'],
@@ -108,7 +109,11 @@ def _get_random_wallpaper():
         response = get(api_url, params=params, headers=headers)
         data = response.json()
         image_data = data["data"][0]
-        return {"id": image_data["id"], "url": image_data['path']}
+        return {
+            "id": image_data["id"],
+            "url": image_data['url'],
+            "path": image_data['path'],
+        }
     except:
         logger.error("Couldn't fetch wallpaper.")
 
@@ -121,7 +126,7 @@ def _download_wallpaper(wallpaper):
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
 
     try:
-        image = get(wallpaper['url']).content
+        image = get(wallpaper['path']).content
     except:
         return
 
