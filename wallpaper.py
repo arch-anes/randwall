@@ -114,7 +114,8 @@ def _get_random_wallpaper():
 
 
 def _download_wallpaper(wallpaper):
-    image_dir = tempfile.gettempdir()
+    image_dir = f"{tempfile.gettempdir()}/randwall"
+    os.makedirs(image_dir, exist_ok=True)
     image_path = f"{image_dir}/{wallpaper['id']}.jpg"
 
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
