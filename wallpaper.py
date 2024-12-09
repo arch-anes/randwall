@@ -86,6 +86,8 @@ def _get_random_wallpaper():
         "ratios": "16x9,16x10",
     }
 
+    logger.info(f"Fetching random wallpaper from https://wallhaven.cc")
+
     try:
         with urlopen(Request(api_url + urlencode(params), headers={"User-Agent": "randwall/1.0"})) as f:
             response = f.read().decode("utf-8")

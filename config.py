@@ -62,6 +62,7 @@ class Config:
 
     def _watch_config_changes(self):
         def watch_config():
+            logger.info(f"Watch config changes")
             for changes in watch(self.config_file_path):
                 self.raw_config = self._load_config()
 
