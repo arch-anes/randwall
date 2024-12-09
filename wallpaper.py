@@ -37,25 +37,7 @@ def _set_wallpaper_linux(wallpaper_path):
         pass
 
     try:
-        import dbus
-
-        plugin = 'org.kde.image'
-
-        jscript = """
-		var allDesktops = desktops();
-		print (allDesktops);
-		for (i=0;i<allDesktops.length;i++) {
-			d = allDesktops[i];
-			d.wallpaperPlugin = "%s";
-			d.currentConfigGroup = Array("Wallpaper", "%s", "General");
-			d.writeConfig("Image", "file://%s")
-		}
-		"""
-        bus = dbus.SessionBus()
-        plasma = dbus.Interface(bus.get_object(
-            'org.kde.plasmashell', '/PlasmaShell'), dbus_interface='org.kde.PlasmaShell')
-        plasma.evaluateScript(jscript % (plugin, plugin, wallpaper_path))
-
+        plasma = subprocess.call(["plasma-apply-wallpaperimage", wallpaper_path], **silent)
     except:
         pass
 
