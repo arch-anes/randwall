@@ -1,4 +1,4 @@
-from urllib.request import urlopen, Request
+from requests import get
 from log import get_logger
 from time import sleep
 
@@ -6,7 +6,7 @@ logger = get_logger(__name__)
 
 def _is_connected():
     try:
-        urlopen(Request("https://1.1.1.1", headers={"User-Agent": "randwall/1.0"}))
+        get("https://1.1.1.1")
         return True
     except:
         logger.warning("Failed to connect to the internet.")

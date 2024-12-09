@@ -1,9 +1,8 @@
-import json
 import platform
 import os
+
+from requests import get
 from log import get_logger
-from urllib.request import urlopen, Request
-from urllib.parse import urlencode
 from config import config
 import subprocess
 import tempfile
@@ -89,9 +88,8 @@ def _get_random_wallpaper():
     logger.info(f"Fetching random wallpaper from https://wallhaven.cc")
 
     try:
-        with urlopen(Request(api_url + urlencode(params), headers={"User-Agent": "randwall/1.0"})) as f:
-            response = f.read().decode("utf-8")
-        data = json.loads(response)
+        response = get(api_url, params=params, headers={"User-Agent": "randwall/1.0"})
+        data = response.json()
         image_data = data["data"][0]
         return {
             "id": image_data["id"],
@@ -110,8 +108,7 @@ def _download_wallpaper(wallpaper):
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
 
     try:
-        with urlopen(Request(wallpaper["path"], headers={"User-Agent": "randwall/1.0"})) as f:
-            image = f.read()
+        image = get(wallpaper["path"]).content
     except:
         return
 
