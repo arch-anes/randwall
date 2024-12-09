@@ -1,6 +1,6 @@
 from watchfiles import watch
 from threading import Thread
-from appdirs import user_config_dir
+from platformdirs import user_config_dir
 import json
 from os import path, makedirs
 from log import get_logger

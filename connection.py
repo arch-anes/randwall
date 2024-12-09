@@ -1,10 +1,10 @@
-from requests import get
+from urllib.request import urlopen, Request
 from time import sleep
 
 
 def _is_connected():
     try:
-        get("https://1.1.1.1")
+        urlopen(Request("https://1.1.1.1", headers={"User-Agent": "randwall/1.0"}))
         return True
     except:
         return False

@@ -1,7 +1,9 @@
+import json
 import platform
 import os
 from log import get_logger
-from requests import get
+from urllib.request import urlopen, Request
+from urllib.parse import urlencode
 from config import config
 import subprocess
 import tempfile
@@ -72,9 +74,9 @@ def _dict_to_binary_string(dm, order):
 
 
 def _get_random_wallpaper():
-    api_url = "https://wallhaven.cc/api/v1/search"
+    api_url = "https://wallhaven.cc/api/v1/search?"
     params = {
-        "apikey": {config['api_key']},
+        "apikey": config['api_key'],
         "categories": _dict_to_binary_string(config['categories'], ['general', 'anime', 'people']),
         "purity": _dict_to_binary_string(config['purity'], ['sfw', 'sketchy', 'nsfw']),
         "q": config['tags'],
@@ -83,13 +85,11 @@ def _get_random_wallpaper():
         "page": "1",
         "ratios": "16x9,16x10",
     }
-    headers = {
-        "User-Agent": "randwall/1.0"
-    }
 
     try:
-        response = get(api_url, params=params, headers=headers)
-        data = response.json()
+        with urlopen(Request(api_url + urlencode(params), headers={"User-Agent": "randwall/1.0"})) as f:
+            response = f.read().decode("utf-8")
+        data = json.loads(response)
         image_data = data["data"][0]
         return {
             "id": image_data["id"],
@@ -108,7 +108,8 @@ def _download_wallpaper(wallpaper):
     logger.info(f"Downloading {wallpaper['url']} at {image_path}")
 
     try:
-        image = get(wallpaper['path']).content
+        with urlopen(Request(wallpaper["path"], headers={"User-Agent": "randwall/1.0"})) as f:
+            image = f.read()
     except:
         return
 
