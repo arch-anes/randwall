@@ -15,10 +15,13 @@ Install the `randwall-bin` AUR package.
 ### Building from source
 
 - Clone the repo
-- Create a Python virtualenv (Optional)
-- Run `pip install -r requirements.txt`
-- Run `python -m PyInstaller --onefile --noconsole randwall`
-- A new file has been generated in the `dist` folder
+- Run `make build`
+- The binary will be generated as `randwall`
+
+Or install directly:
+```bash
+go install github.com/arch-anes/randwall@latest
+```
 
 ## Configuration
 
@@ -39,7 +42,10 @@ The configuration file contains the following settings:
 
 ### Standalone executable
 
-Simply start the executable.
+Simply start the executable:
+```bash
+./randwall
+```
 
 ### Arch Linux
 

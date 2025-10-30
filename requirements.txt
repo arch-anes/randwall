@@ -1,4 +1,0 @@
-platformdirs==4.3.6
-pyinstaller==6.11.1
-requests==2.32.3
-watchfiles==1.0.0
